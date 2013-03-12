@@ -2584,6 +2584,7 @@ PHP_FUNCTION(array_column)
 	ulong column_idx = 0, key_idx = 0, keyval_idx = 0;
 	char *column = NULL, *key = NULL, *keyval = NULL;
 	int column_len = 0, key_len = 0;
+	uint keyval_len;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "az|z", &zarray, &zcolumn, &zkey) == FAILURE) {
 		return;
@@ -2651,6 +2652,8 @@ PHP_FUNCTION(array_column)
 
 			keyval = NULL;
 			keyval_idx = NULL;
+
+			zend_hash_get_current_key_ex(arr_hash, &keyval, &keyval_len, &keyval_idx, 0, &pointer);
 
 			if (zkey) {
 				if (key && zend_hash_find(Z_ARRVAL_PP(data), key, key_len + 1, (void**)&zkeyval) == FAILURE) {
